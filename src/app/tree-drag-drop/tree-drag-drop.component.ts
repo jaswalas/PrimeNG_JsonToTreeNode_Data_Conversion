@@ -29,7 +29,8 @@ export class TreeDragDropComponent implements OnInit {
 
     this.nodeService.getFilesUsingObs().subscribe(data => {
       console.log(data);
-     this.treeNodeSource = this.helper.createParentNode(data);
+     const parentNodeObject = this.helper.createParentNode(data);
+     this.treeNodeSource.push(parentNodeObject);
     });
 
 

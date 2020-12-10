@@ -19,7 +19,8 @@ export class HelperClass {
         this.jsonSchema = data;
         this.listOfTypesInSchema = this.jsonSchema.__schema.types;
         const parentNode = data.__schema.queryType.name;
-        return this.createSecondLevelObject(parentNode, data);
+        const apiMapperSchema = this.createSecondLevelObject(parentNode, data);
+        return this.callObjectCreation(parentNode,IsChildrenNodePresent.YES,apiMapperSchema);
     }
 
     createSecondLevelObject(label, data) {
@@ -28,19 +29,19 @@ export class HelperClass {
 
         const type = apiNamesList.kind;
 
-        //Create API Request object
         if (type === "OBJECT") {
             apiNamesList.fields.forEach(element => {
 
+                //Create API Request object
                 const apiReqResArray: TreeNode[] = [];
-                const requestObj = this.createRequestObjStructure(element);
+                const requestObj = this.createRequestObjStructure(element,"Arguments");
                 apiReqResArray.push(requestObj);
 
                 //
                 //Create API Response object
                 const arrayOfRes = data.__schema.types.filter(x => x.name == element.type.ofType.name);
                 const newArray = this.createArrayOfObjects(arrayOfRes[0].fields);
-                const responseObj = this.createMainObjectStructure(element.type.ofType.name, newArray);
+                const responseObj = this.createMainObjectStructure("Responses", newArray);
                 apiReqResArray.push(responseObj);
                 let obj = this.callObjectCreation(element.name, IsChildrenNodePresent.YES, apiReqResArray);
 
@@ -59,10 +60,10 @@ export class HelperClass {
         return obj;
     }
 
-    createRequestObjStructure(child): Object {
+    createRequestObjStructure(child, nodeName): Object {
         var listOfArgs = child.args;
         const _arr = this.createArrayOfObjects(listOfArgs);
-        return this.createMainObjectStructure(child.name, _arr);
+        return this.createMainObjectStructure(nodeName ??child.name, _arr);
     }
 
 
