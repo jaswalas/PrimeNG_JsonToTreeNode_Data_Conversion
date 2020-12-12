@@ -1,10 +1,15 @@
 import { TreeNode } from 'primeng/api';
 import { Tree } from 'primeng/tree';
-
-enum IsChildrenNodePresent {
-    NO = 0,
-    YES = 1,
-}
+import {
+    IsChildrenNodePresent,
+    collapsedIcon,
+    expandedIcon,
+    ELEMENT_TYPE_KIND_SCALAR,
+    METHOD_RESPONSE_NODE,
+    METHOD_ARGS_NODE,
+    concatNameAndType,
+    createTreeNodeObject
+} from './helper';
 
 export class microServiceDataHelper {
     mainTreeArray: TreeNode[] = [];
@@ -12,11 +17,6 @@ export class microServiceDataHelper {
     responseArray: TreeNode[] = [];
     selectedFile: TreeNode;
     listOfTypesInSchema = [];
-    collapsedIcon: string = 'pi pi-folder-open';
-    expandedIcon: string = 'pi pi-folder';
-    ELEMENT_TYPE_KIND_SCALAR = 'SCALAR';
-    METHOD_ARGS_NODE = "Arguments";
-    METHOD_RESPONSE_NODE = "Responses"
     schemaData;
 
     constructor() { }
@@ -33,18 +33,18 @@ export class microServiceDataHelper {
 
             // create object for each api method and its children elements
             apiMethodsArray.forEach(function (element: any) {
-                this.createApiMethodObjects(element,JSONData);
+                this.createApiMethodObjects(element, JSONData);
             }, this)
         }, this)
 
-        // append all api method children node to main node 
-        let node = this.createTreeNodeObject(title,IsChildrenNodePresent.YES,this.apiMethodsArray);
+        // append all api method children node to MAIN node 
+        let node = createTreeNodeObject(title, IsChildrenNodePresent.YES, this.apiMethodsArray);
         this.mainTreeArray.push(node);
 
         return this.mainTreeArray;
     }
 
-    createApiMethodObjects(element,JSONData) {
+    createApiMethodObjects(element, JSONData) {
         let elementMappingArray = [];
 
         //Args
@@ -55,27 +55,27 @@ export class microServiceDataHelper {
 
         let node = Object.keys(JSONData.paths)[0] + "/" + element[0].toUpperCase() + "-" +
             element[1].operationId;
-        this.apiMethodsArray.push(this.createTreeNodeObject(node, IsChildrenNodePresent.YES, elementMappingArray));
+        this.apiMethodsArray.push(createTreeNodeObject(node, IsChildrenNodePresent.YES, elementMappingArray));
 
     }
 
     createArgumentsObject(element): Object {
         let argsNodeArray = [];
         for (let param = 0; param < element.parameters.length; param++) {
-            let nodeName = this.concatNameAndType(element.parameters[param].name,"string");
+            let nodeName = concatNameAndType(element.parameters[param].name, "string");
             let nodeObject =
-                this.createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);
+                createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);
 
             argsNodeArray.push(nodeObject);
         }
 
-        return this.createTreeNodeObject(this.METHOD_ARGS_NODE, IsChildrenNodePresent.YES, argsNodeArray);
+        return createTreeNodeObject(METHOD_ARGS_NODE, IsChildrenNodePresent.YES, argsNodeArray);
     }
 
     createResponseObject(element): Object {
         this.mapResponseObjectToData(element);
         let responseObject =
-            this.createTreeNodeObject(this.METHOD_RESPONSE_NODE, IsChildrenNodePresent.YES, this.responseArray);
+            createTreeNodeObject(METHOD_RESPONSE_NODE, IsChildrenNodePresent.YES, this.responseArray);
         return responseObject;
     }
 
@@ -111,11 +111,11 @@ export class microServiceDataHelper {
         if (object) {
             if (object.type === "string") {
                 hasChildNode = false;
-                key = this.concatNameAndType(key,"string");
+                key = concatNameAndType(key, "string");
             } else {
                 childrenNodeArray = [...this.nonPrimitiveObject(object)];
             }
-            return this.createTreeNodeObject(key, hasChildNode, childrenNodeArray);
+            return createTreeNodeObject(key, hasChildNode, childrenNodeArray);
         }
 
     }
@@ -156,57 +156,4 @@ export class microServiceDataHelper {
         return arr;
     }
 
-    createTreeNodeObject(label, isChild, childrenArray = []) {
-        let obj: any = {
-            label: label,
-            collapsedIcon: this.collapsedIcon,
-            expandedIcon: this.expandedIcon
-        }
-
-        if (isChild) {
-            obj.children = childrenArray
-        }
-
-        return obj;
-    }
-
-    concatNameAndType(eleName, eleType) {
-        return eleName + ' (' + eleType + ')';
-    }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// createTreeNodeForScalarType(objectKey) {
-//     this.createTreeNodeObject(objectKey, IsChildrenNodePresent.NO);
-// }
-
-// createTreeNodeForListType() {
-
-// }
-
-// createTreeNodeForObjectType(key, props) {
-//     for(const val in props) {
-//         const nestedProp = props[val]['properties']
-
-//     }
-// }
-
-
-
-

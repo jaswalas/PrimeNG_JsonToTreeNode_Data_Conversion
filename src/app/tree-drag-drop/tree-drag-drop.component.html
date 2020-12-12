@@ -9,7 +9,9 @@
     <div class="p-col-12 p-md-4">
         <h4>MicroService</h4>
 
-        <p-tree [value]="microServiceTreeNode" [draggableNodes]="true" [droppableNodes]="true" droppableScope="a"
+        <p-tree [value]="microServiceTreeNode" [draggableNodes]="true" 
+        selectionMode="checkbox"
+        [droppableNodes]="true" droppableScope="a"
             draggableScope="a"></p-tree>
     </div>
 

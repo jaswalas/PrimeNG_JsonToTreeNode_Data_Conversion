@@ -1,19 +1,19 @@
 import { TreeNode } from 'primeng/api';
-
-enum IsChildrenNodePresent {
-    NO = 0,
-    YES = 1,
-}
+import {
+    IsChildrenNodePresent,
+    collapsedIcon,
+    expandedIcon,
+    ELEMENT_TYPE_KIND_SCALAR,
+    METHOD_RESPONSE_NODE,
+    METHOD_ARGS_NODE,
+    concatNameAndType,
+    createTreeNodeObject
+} from './helper';
 
 export class HelperClass {
     mainTreeArray: TreeNode[] = [];
     selectedFile: TreeNode;
     listOfTypesInSchema = [];
-    collapsedIcon: string = 'pi pi-folder-open';
-    expandedIcon: string = 'pi pi-folder';
-    ELEMENT_TYPE_KIND_SCALAR = 'SCALAR';
-    METHOD_ARGS_NODE = "Arguments";
-    METHOD_RESPONSE_NODE = "Responses"
 
     constructor() { }
 
@@ -26,7 +26,7 @@ export class HelperClass {
 
     mapJsonToTreeNode(parentNode, jsonData):Object {
         const apiMapperSchema = this.createSecondLevelObject(parentNode, jsonData);
-        return this.createTreeNodeObject(parentNode, IsChildrenNodePresent.YES, apiMapperSchema);
+        return createTreeNodeObject(parentNode, IsChildrenNodePresent.YES, apiMapperSchema);
     }
 
     createSecondLevelObject(label, data): Array<Object> {
@@ -38,13 +38,13 @@ export class HelperClass {
             const apiReqResArray: TreeNode[] = [];
 
             // Arguments section
-            this.convertToTreeStructure(element.args, this.METHOD_ARGS_NODE, apiReqResArray);
+            this.convertToTreeStructure(element.args, METHOD_ARGS_NODE, apiReqResArray);
 
             //response Section
             const arrayOfRes = data.__schema.types.filter(x => x.name == element.type.ofType.name)[0];
-            this.convertToTreeStructure(arrayOfRes.fields, this.METHOD_RESPONSE_NODE, apiReqResArray);
+            this.convertToTreeStructure(arrayOfRes.fields, METHOD_RESPONSE_NODE, apiReqResArray);
 
-            let methodLevelTreeStructure = this.createTreeNodeObject(element.name, IsChildrenNodePresent.YES, apiReqResArray);
+            let methodLevelTreeStructure = createTreeNodeObject(element.name, IsChildrenNodePresent.YES, apiReqResArray);
             this.mainTreeArray.push(methodLevelTreeStructure);
         });
 
@@ -53,7 +53,7 @@ export class HelperClass {
 
     convertToTreeStructure(element, nodeHeader, mainTreeArray) {
         const _arr = this.mapHierarchyOfJsonData(element);
-        const arrayStructure = this.createTreeNodeObject(nodeHeader, IsChildrenNodePresent.YES, _arr);
+        const arrayStructure = createTreeNodeObject(nodeHeader, IsChildrenNodePresent.YES, _arr);
         return mainTreeArray.push(arrayStructure);
     }
 
@@ -61,7 +61,7 @@ export class HelperClass {
         const tempArray = [];
         array.forEach(element => {
             // When type is primitive
-            if (element.type.kind === this.ELEMENT_TYPE_KIND_SCALAR) {
+            if (element.type.kind === ELEMENT_TYPE_KIND_SCALAR) {
                 return this.convertDataForSimpleType(element.name, tempArray);
             } else {
                 // When type is complex
@@ -77,7 +77,7 @@ export class HelperClass {
             temp = this.listOfTypesInSchema.filter(x => x.name == element.type.name);
             tempArray.push(this.createResObjForTypeObject(temp, element.name));
         } else if (element.type.kind === "LIST" &&
-            element.type.ofType.kind !== this.ELEMENT_TYPE_KIND_SCALAR) {
+            element.type.ofType.kind !== ELEMENT_TYPE_KIND_SCALAR) {
             temp = this.listOfTypesInSchema.filter(x => x.name == element.type.ofType.name);
             tempArray.push(this.createResObjForTypeObject(temp, element.name));
         }
@@ -87,13 +87,13 @@ export class HelperClass {
 
     createResObjForTypeObject(obj, propName) {
         var children = this.transform(obj[0].fields);
-        return this.createTreeNodeObject(propName, IsChildrenNodePresent.YES, children);
+        return createTreeNodeObject(propName, IsChildrenNodePresent.YES, children);
     }
 
     transform(array) {
         var childrenArray = [];
         array.forEach(element => {
-            if (element.type.kind === this.ELEMENT_TYPE_KIND_SCALAR) {
+            if (element.type.kind === ELEMENT_TYPE_KIND_SCALAR) {
                 return this.convertDataForSimpleType(element.name, childrenArray);
             } else {
                 this.createObjectForNonPrimitive(element, childrenArray)
@@ -106,29 +106,10 @@ export class HelperClass {
     }
 
     convertDataForSimpleType(element, parentArrayToAppendTo)   {
-        const nodeName = this.concatNameAndType(element, "String");
-        const obj = this.createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);
+        const nodeName = concatNameAndType(element, "String");
+        const obj = createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);
         parentArrayToAppendTo.push(obj);
     }
-
-    createTreeNodeObject(label, isChild, childrenArray = []): Object {
-        let obj: any = {
-            label: label,
-            collapsedIcon: this.collapsedIcon,
-            expandedIcon: this.expandedIcon
-        }
-
-        if (isChild) {
-            obj.children = childrenArray
-        }
-
-        return obj;
-    }
-
-    concatNameAndType(eleName, eleType) {
-        return eleName + ' (' + eleType + ')';
-    }
-
 }
 
 
