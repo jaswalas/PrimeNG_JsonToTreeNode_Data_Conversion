@@ -3,7 +3,8 @@ import { NodeService } from '../node.service';
 import { TreeNode } from 'primeng/api';
 import { TreeDragDropService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-import { HelperClass } from './helperClass'
+import { HelperClass } from './dassDataConversionHelper';
+import {microServiceDataHelper} from './microServiceDataConversionHelper';
 
 @Component({
   selector: 'app-tree-drag-drop',
@@ -18,47 +19,37 @@ import { HelperClass } from './helperClass'
 })
 export class TreeDragDropComponent implements OnInit {
 
-  treeNodeSource: TreeNode[] = [];
+  daasTreeNode: TreeNode[] = [];
+  microServiceTreeNode : TreeNode[] = [];
   helper: HelperClass;
+  microHelper : microServiceDataHelper;
 
   constructor(private nodeService: NodeService) {
     this.helper = new HelperClass();
+    this.microHelper = new microServiceDataHelper();
   }
 
   ngOnInit(): void {
 
+    /*
+    For Daas data conversion
+    */
     this.nodeService.getFilesUsingObs().subscribe(data => {
       console.log(data);
      const parentNodeObject = this.helper.createParentNode(data);
-     this.treeNodeSource.push(parentNodeObject);
+     this.daasTreeNode.push(parentNodeObject);
     });
 
 
-    // this.nodeService.getFilesUsingObs().subscribe(files => {
-    //   this.files2 = files.data
-    // });
-    //this.nodeService.getFiles().then(files => this.files1 = files);
-    // this.nodeService.getFiles().then(files => this.files2 = files);
-
-    // this.files3 = [{
-    //   label: 'BackUp',
-    //   data: 'BackUp Folder',
-    //   expandedIcon: "pi pi-folder-open",
-    //   collapsedIcon: "pi pi-folder"
-    // }];
-
-
-    // this.files2 = [{
-    //   label: 'Storage',
-    //   data: 'Storage Folder',
-    //   expandedIcon: "pi pi- folder-open",
-    //   collapsedIcon: "pi pi-folder"
-    // }];
-
-
-
-
-
+    /*
+    For Microservice data conversion
+    */
+    this.nodeService.getMicroSerJSONUsingObs().subscribe(data => {
+        console.log(data);
+       const parentNodeObject = this.microHelper.createParentNode(data);
+       this.microServiceTreeNode = [...parentNodeObject];
+      });
+  
   }
 
 }

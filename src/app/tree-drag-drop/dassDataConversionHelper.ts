@@ -17,20 +17,19 @@ export class HelperClass {
 
     constructor() { }
 
-    createParentNode(JSONData) {
+    createParentNode(JSONData): Object {
         this.listOfTypesInSchema = JSONData.__schema.types;
         const parentNode = JSONData.__schema.queryType.name;
         const mappedDataToTreeView = this.mapJsonToTreeNode(parentNode, JSONData);
         return mappedDataToTreeView;
     }
 
-    mapJsonToTreeNode(parentNode, jsonData) {
+    mapJsonToTreeNode(parentNode, jsonData):Object {
         const apiMapperSchema = this.createSecondLevelObject(parentNode, jsonData);
-        const treeViewRootNode = this.createTreeNodeObject(parentNode, IsChildrenNodePresent.YES, apiMapperSchema);
-        return treeViewRootNode;
+        return this.createTreeNodeObject(parentNode, IsChildrenNodePresent.YES, apiMapperSchema);
     }
 
-    createSecondLevelObject(label, data) {
+    createSecondLevelObject(label, data): Array<Object> {
         const apiNamesList = this.listOfTypesInSchema.filter(x => x.name === label)[0];
         const childnestedChild = apiNamesList.fields;
         apiNamesList.fields.forEach(element => {
@@ -54,12 +53,11 @@ export class HelperClass {
 
     convertToTreeStructure(element, nodeHeader, mainTreeArray) {
         const _arr = this.mapHierarchyOfJsonData(element);
-        //  const arrayStructure = this.createMainObjectStructure(nodeHeader, _arr);
         const arrayStructure = this.createTreeNodeObject(nodeHeader, IsChildrenNodePresent.YES, _arr);
         return mainTreeArray.push(arrayStructure);
     }
 
-    mapHierarchyOfJsonData(array) {
+    mapHierarchyOfJsonData(array): any[] {
         const tempArray = [];
         array.forEach(element => {
             // When type is primitive
@@ -107,13 +105,13 @@ export class HelperClass {
         return childrenArray;
     }
 
-    convertDataForSimpleType(element, parentArrayToAppendTo) {
+    convertDataForSimpleType(element, parentArrayToAppendTo)   {
         const nodeName = this.concatNameAndType(element, "String");
         const obj = this.createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);
         parentArrayToAppendTo.push(obj);
     }
 
-    createTreeNodeObject(label, isChild, childrenArray = []) {
+    createTreeNodeObject(label, isChild, childrenArray = []): Object {
         let obj: any = {
             label: label,
             collapsedIcon: this.collapsedIcon,

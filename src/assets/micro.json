@@ -1,0 +1,1169 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Health Guide Member Eligibility API",
+      "description": "\r\n**Summary**: This API is utilized to find the Eligibility of a member. This is another API in series of Membership API\u2019s.\r\n\r\n\r\n\r\n  **Purpose**: This API utilizes member UID to pull Member and related Product information from the contract linked with Member. Member UID can be derived from API\u2019s like Member Search using \u201Cphone\u201D,\u201Dhcid\u201D,\u201DsubscriberId\u201D as input.",
+      "contact": {
+        "name": "AD02751, AF08268"
+      },
+      "version": "1.0"
+    },
+    "host": "virtual.api.anthem.com",
+    "basePath": "/v1/healthguide/members",
+    "tags": [
+      {
+        "name": "Member Eligibility API",
+        "description": "**Summary**: This API is utilized to find the Eligibility of a member. This is another API in series of Membership API\u2019s. \n**Purpose**: This API utilizes member UID to pull Member and related Product information from the contract linked with Member. Member UID can be derived from APIs like Member Search using phone, hcid, subscriberId as input."
+      }
+    ],
+    "schemes": [
+      "https"
+    ],
+    "paths": {
+      "/eligibility": {
+        "get": {
+          "tags": [
+            "Member Eligibility API",
+            "member eligibility"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "security": [
+            {
+              "apiKeyPolicy": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "",
+              "schema": {
+                "$ref": "#/definitions/mbrEligibilityResponse"
+              }
+            },
+            "400": {
+              "description": "BAD REQUEST",
+              "schema": {
+                "$ref": "#/definitions/APIExceptions"
+              }
+            },
+            "401": {
+              "description": "UNAUTHORIZED",
+              "schema": {
+                "$ref": "#/definitions/APIExceptions"
+              }
+            },
+            "500": {
+              "description": "INTERNAL SERVER FAILURE",
+              "schema": {
+                "$ref": "#/definitions/APIExceptions"
+              }
+            },
+            "404": {
+              "description": "NOT FOUND - UNABLE TO FIND THE RESOURCE REQUESTED",
+              "schema": {
+                "$ref": "#/definitions/APIExceptions"
+              }
+            },
+            "503": {
+              "description": "SERVICE UNAVAILABLE",
+              "schema": {
+                "$ref": "#/definitions/APIExceptions"
+              }
+            }
+          },
+          "description": "**Summary**: This API is utilized to find the Eligibility of a member. This is another API in series of Membership API\u2019s.\r\n\r\n**Purpose**: This API utilizes member UID to pull Member and related Product information from the contract linked with Member. Member UID can be derived from API\u2019s like Member Search using \u201Cphone\u201D,\u201Dhcid\u201D,\u201DsubscriberId\u201D as input.",
+          "operationId": "member eligibility",
+          "parameters": [
+            {
+              "name": "lastNm",
+              "in": "query",
+              "description": "Last Name of the member",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "middleNm",
+              "in": "query",
+              "description": "Middle Name of the member",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "dob",
+              "in": "query",
+              "description": "Date of birth of the member",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "mbruid",
+              "in": "query",
+              "required": true,
+              "description": "An Identifier which will uniquely identify a member in the \r\nservice data store\r\n",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "hcid",
+              "in": "query",
+              "description": "Identifier used for a member on the insurance card",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "firstNm",
+              "in": "query",
+              "description": "First Name of the member",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "apikey",
+              "in": "header",
+              "required": true,
+              "description": "Security provided by APIGEE",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "meta-senderapp",
+              "in": "header",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "meta-transid",
+              "in": "header",
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "tenantid",
+              "in": "header",
+              "required": true,
+              "type": "string",
+              "format": "string"
+            },
+            {
+              "name": "authorization",
+              "in": "query",
+              "type": "string",
+              "format": "string"
+            }
+          ]
+        }
+      }
+    },
+    "securityDefinitions": {
+      "apiKeyPolicy": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "apikey"
+      }
+    },
+    "definitions": {
+      "APIExceptions": {
+        "type": "object",
+        "properties": {
+          "exceptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "format": "string"
+                },
+                "code": {
+                  "type": "string",
+                  "format": "string"
+                },
+                "message": {
+                  "type": "string",
+                  "format": "string"
+                },
+                "details": {
+                  "type": "string",
+                  "format": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CodeDescription": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "format": "string"
+          },
+          "name": {
+            "type": "string",
+            "format": "string"
+          },
+          "desc": {
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "CodeNameDescription": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "code",
+            "type": "string",
+            "format": "string"
+          },
+          "name": {
+            "description": "name",
+            "type": "string",
+            "format": "string"
+          },
+          "description": {
+            "description": "description",
+            "type": "string",
+            "format": "string"
+          }
+        }
+      },
+      "mbrEligibilityResponse": {
+        "type": "object",
+        "properties": {
+          "member": {
+            "required": [
+              "dob",
+              "firstNm",
+              "genderCd",
+              "lastNm",
+              "mbrUid",
+              "namePrefix",
+              "nameSuffix",
+              "tobaccoInd"
+            ],
+            "type": "object",
+            "properties": {
+              "mbrUid": {
+                "description": "Member Unique Id",
+                "type": "string",
+                "format": "string"
+              },
+              "firstNm": {
+                "type": "string",
+                "format": "string"
+              },
+              "middleNm": {
+                "type": "string",
+                "format": "string"
+              },
+              "lastNm": {
+                "description": "Last Name",
+                "type": "string",
+                "format": "string"
+              },
+              "namePrefix": {
+                "description": "namePrefix",
+                "type": "string"
+              },
+              "nameSuffix": {
+                "description": "nameSuffix",
+                "type": "string"
+              },
+              "dob": {
+                "type": "string",
+                "format": "string"
+              },
+              "tobaccoInd": {
+                "description": "tobaccoInd",
+                "type": "string"
+              },
+              "maritalStatusCd": {
+                "$ref": "#/definitions/CodeNameDescription"
+              },
+              "genderCd": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "name": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "format": "string"
+                  }
+                }
+              },
+              "eligibility": {
+                "type": "array",
+                "items": {
+                  "required": [
+                    "benefitEndDt",
+                    "benefitPeriodInd",
+                    "benefitStartDt",
+                    "cobInd",
+                    "contract",
+                    "contractUid",
+                    "effectiveDt",
+                    "groupId",
+                    "groupNm",
+                    "hcId",
+                    "hireDt",
+                    "mbrSequenceNbr",
+                    "medicareInd",
+                    "paidToDate",
+                    "productGroupNbr",
+                    "relationshipCd",
+                    "terminationDt"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "hcId": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "mbrSequenceNbr": {
+                      "description": "Member Sequece Mumber",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "cobInd": {
+                      "description": "cob Ind",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "medicareInd": {
+                      "description": "medicare Ind",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "paidToDate": {
+                      "description": "paid TO Date",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "benefitPeriodInd": {
+                      "description": "benefit Period Ind",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "relationshipCd": {
+                      "$ref": "#/definitions/relationshipCd"
+                    },
+                    "effectiveDt": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "benefitStartDt": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "accountNbr": {
+                      "description": "accountNbr",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "accountNm": {
+                      "description": "account name",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "groupId": {
+                      "description": "groupId",
+                      "type": "string"
+                    },
+                    "groupNm": {
+                      "description": "group Name",
+                      "type": "string"
+                    },
+                    "legacyMigratedGrpNbr": {
+                      "description": "legacy Migrated Group Number",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "erisaInd": {
+                      "description": "Employee Retirement Income and Security Act Indicator.",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "benefitEndDt": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "terminationDt": {
+                      "description": "termination Dt",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "productGroupNbr": {
+                      "description": "product Group Number",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "contract": {
+                      "required": [
+                        "bcbsaHomePlanId",
+                        "businessEntity",
+                        "contractId",
+                        "effectiveDt",
+                        "enrollmentTypeCd",
+                        "finCompany",
+                        "fundingType",
+                        "marketUnit",
+                        "network",
+                        "region",
+                        "sourceSystemId",
+                        "state",
+                        "subscriberId"
+                      ],
+                      "type": "object",
+                      "properties": {
+                        "subscriberId": {
+                          "type": "string",
+                          "format": "string"
+                        },
+                        "contractId": {
+                          "type": "string",
+                          "format": "string"
+                        },
+                        "network": {
+                          "description": "network",
+                          "type": "string",
+                          "format": "string"
+                        },
+                        "state": {
+                          "$ref": "#/definitions/CodeDescription"
+                        },
+                        "businessEntity": {
+                          "$ref": "#/definitions/CodeDescription"
+                        },
+                        "region": {
+                          "$ref": "#/definitions/CodeDescription"
+                        },
+                        "marketUnit": {
+                          "$ref": "#/definitions/CodeDescription"
+                        },
+                        "enrollmentTypeCd": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string",
+                              "format": "string"
+                            }
+                          }
+                        },
+                        "fundingType": {
+                          "$ref": "#/definitions/CodeDescription"
+                        },
+                        "finCompany": {
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string",
+                              "format": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "sourceSystemId": {
+                          "type": "string",
+                          "format": "string"
+                        },
+                        "effectiveDt": {
+                          "type": "string",
+                          "format": "string"
+                        },
+                        "bcbsaHomePlanId": {
+                          "description": "BCBSA Home Plan Id",
+                          "type": "object",
+                          "properties": {
+                            "code": {
+                              "enum": [
+                                "834"
+                              ],
+                              "type": "string"
+                            },
+                            "name": {
+                              "enum": [
+                                "Anthem Blue Cross Blue Shield"
+                              ],
+                              "description": "name",
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "coverage": {
+                      "type": "array",
+                      "items": {
+                        "required": [
+                          "alphaPrefix",
+                          "cancelReasonCd",
+                          "effectiveDt",
+                          "exchangeInd",
+                          "exchangeStateCd",
+                          "exchangeTypeCd",
+                          "statusCd",
+                          "terminationDt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                          "effectiveDt": {
+                            "type": "string",
+                            "format": "string"
+                          },
+                          "terminationDt": {
+                            "type": "string",
+                            "format": "string"
+                          },
+                          "alphaPrefix": {
+                            "type": "string",
+                            "format": "string"
+                          },
+                          "statusCd": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "enum": [
+                                  "INDBILL",
+                                  "NACTVPND",
+                                  "VOID",
+                                  "PEND",
+                                  "ACTV",
+                                  "COBRA",
+                                  "CANC",
+                                  "DUMMY",
+                                  "TRNS",
+                                  "PRGD"
+                                ],
+                                "description": "code",
+                                "type": "string"
+                              },
+                              "name": {
+                                "enum": [
+                                  "Individual Bill",
+                                  "Inactive-Pending Investigation",
+                                  "Void",
+                                  "Pending",
+                                  "Active",
+                                  "COBRA",
+                                  "Cancelled",
+                                  "DUMMY",
+                                  "Transfer-In",
+                                  "Purged"
+                                ],
+                                "description": "name",
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "exchangeTypeCd": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "enum": [
+                                  "FF",
+                                  "BL",
+                                  "CE",
+                                  "OE",
+                                  "S",
+                                  "MM",
+                                  "RO"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "name": {
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "description": {
+                                "enum": [
+                                  "Federally Facilitated Exchange is a public exchange operated by Health & Human Services on behalf of States under the Federal PPACA law",
+                                  "The Anthem Health Marketplace is a private exchange operated by Bloom on behalf of WellPoint",
+                                  "The Corporate Health Exchange is a private multi-carrier managed insurance exchange operated by Aon Hewitt on behalf of Aon Hewitt",
+                                  "OneExchange is a private exchange for active",
+                                  "part-time and retired workers operated by Towers Watson on behalf of Towers Watson",
+                                  "State.",
+                                  "Mercer Marketplace is a private exchange for employers ranging from 100 to more than 100",
+                                  "000 employees operated by Mercer on behalf of Mercer",
+                                  "RightOpt is a private health exchange for employers with 3",
+                                  "000 or more benefit-eligible employees operated by Buck on behalf of Buck"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              }
+                            }
+                          },
+                          "exchangeStateCd": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "enum": [
+                                  "CO",
+                                  "CT",
+                                  "GA",
+                                  "IN",
+                                  "NY",
+                                  "NA",
+                                  "ME",
+                                  "KY",
+                                  "NH",
+                                  "WI",
+                                  "CA",
+                                  "MO",
+                                  "NV",
+                                  "VA",
+                                  "OH"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "name": {
+                                "enum": [
+                                  "Colorado",
+                                  "Connecticut",
+                                  "Georgia",
+                                  "Indiana",
+                                  "New York",
+                                  "Not Applicable",
+                                  "Maine",
+                                  "Kentucky",
+                                  "New Hampshire",
+                                  "Wisconsin",
+                                  "California",
+                                  "Missouri",
+                                  "Nevada",
+                                  "Virginia",
+                                  "Ohio"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "description": {
+                                "type": "string",
+                                "format": "string"
+                              }
+                            }
+                          },
+                          "exchangeInd": {
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "enum": [
+                                  "OF",
+                                  "PR",
+                                  "FB"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "name": {
+                                "enum": [
+                                  "Private Exchange",
+                                  "Off Exchange",
+                                  "Public Exchange"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "description": {
+                                "enum": [
+                                  "This EXCHANGE INDICATOR CODE designates that this product was sold as a Private Exchange",
+                                  "This EXCHANGE INDICATOR CODE designates that this product was sold as Off Exchange",
+                                  "This EXCHANGE INDICATOR CODE designates that this product was sold as Public Exchange"
+                                ],
+                                "type": "string",
+                                "format": "string"
+                              }
+                            }
+                          },
+                          "cancelReasonCd": {
+                            "description": "cancelReasonCd",
+                            "type": "object",
+                            "properties": {
+                              "code": {
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "name": {
+                                "type": "string",
+                                "format": "string"
+                              },
+                              "description": {
+                                "type": "string",
+                                "format": "string"
+                              }
+                            }
+                          },
+                          "product": {
+                            "type": "array",
+                            "items": {
+                              "required": [
+                                "bnftPlanCd",
+                                "cdhpType",
+                                "effectiveDt",
+                                "pcpRequired",
+                                "planType",
+                                "prodMrktgNm",
+                                "productFamCd",
+                                "productFamilyType",
+                                "productId",
+                                "productNm",
+                                "productType"
+                              ],
+                              "type": "object",
+                              "properties": {
+                                "effectiveDt": {
+                                  "type": "string",
+                                  "format": "string"
+                                },
+                                "productType": {
+                                  "description": "product Type",
+                                  "type": "string",
+                                  "format": "string"
+                                },
+                                "prodMrktgNm": {
+                                  "description": "prod Mrktg Nm",
+                                  "type": "string",
+                                  "format": "string"
+                                },
+                                "bnftPlanCd": {
+                                  "description": "bnft Plan Cd",
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "format": "string"
+                                    }
+                                  }
+                                },
+                                "productId": {
+                                  "type": "string",
+                                  "format": "string"
+                                },
+                                "productNm": {
+                                  "type": "string",
+                                  "format": "string"
+                                },
+                                "productFamCd": {
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "format": "string"
+                                    }
+                                  }
+                                },
+                                "productFamilyType": {
+                                  "description": "product Family Type",
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "format": "string"
+                                    }
+                                  }
+                                },
+                                "cdhpType": {
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "pcpRequired": {
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "format": "string"
+                                    }
+                                  }
+                                },
+                                "planType": {
+                                  "description": "plan Type",
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "format": "string"
+                                    }
+                                  }
+                                },
+                                "vendor": {
+                                  "description": "vendor",
+                                  "type": "array",
+                                  "items": {
+                                    "required": [
+                                      "vendorNm"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                      "vendorNm": {
+                                        "description": "vendor Nm",
+                                        "type": "string",
+                                        "format": "string"
+                                      }
+                                    }
+                                  }
+                                },
+                                "buyUpIndicatorList": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "code": {
+                                        "type": "string",
+                                        "format": "string"
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "format": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                },
+                                "transparencyIndicator": {
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "name": {
+                                      "type": "string",
+                                      "format": "string"
+                                    },
+                                    "description": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "businessUnit": {
+                                  "description": "businessunit",
+                                  "type": "object",
+                                  "properties": {
+                                    "code": {
+                                      "description": "code",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "name",
+                                      "type": "string"
+                                    },
+                                    "description": {
+                                      "description": "description",
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "classId": {
+                                  "description": "Class ID",
+                                  "type": "string"
+                                },
+                                "classDescription": {
+                                  "description": "ClassDescription",
+                                  "type": "string",
+                                  "format": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "contractUid": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "networkId": {
+                      "description": "Network identifier",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "mbrUid": {
+                      "description": "mbruid",
+                      "type": "string"
+                    },
+                    "hireDt": {
+                      "description": "hireDt",
+                      "type": "string"
+                    },
+                    "cardIssueDt": {
+                      "description": "Member ID Card Issue Date - in YYYY-MM-DD format",
+                      "type": "string"
+                    },
+                    "rateGuaranteeDt": {
+                      "description": "Rate Guarantee Date",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "medicaId": {
+                      "description": "Medicaid id",
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "mbrKey": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "subgroupId": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "subGroupDesc": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "firstNm": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "middleNm": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "lastNm": {
+                      "type": "string"
+                    },
+                    "maritalStatusCd": {
+                      "$ref": "#/definitions/CodeNameDescription"
+                    },
+                    "dob": {
+                      "type": "string",
+                      "format": "string"
+                    },
+                    "genderCd": {
+                      "$ref": "#/definitions/CodeNameDescription"
+                    }
+                  }
+                }
+              },
+              "raceCd": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "description": "code",
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "name": {
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "format": "string"
+                  }
+                }
+              },
+              "ethnicityCd ": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "description": "code",
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "name": {
+                    "description": "name",
+                    "type": "string",
+                    "format": "string"
+                  },
+                  "description": {
+                    "description": "description",
+                    "type": "string",
+                    "format": "string"
+                  }
+                }
+              },
+              "contactInformation": {
+                "type": "object",
+                "properties": {
+                  "memberAddress": {
+                    "type": "object",
+                    "properties": {
+                      "addressLine1": {
+                        "description": "Address Line 1",
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "addressLine2": {
+                        "description": "Address Line 2",
+                        "type": "string"
+                      },
+                      "addressLine3": {
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "city": {
+                        "description": "City Name",
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "stateCd": {
+                        "$ref": "#/definitions/CodeNameDescription"
+                      },
+                      "country": {
+                        "description": "Country",
+                        "type": "string"
+                      },
+                      "postalCd": {
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "addressTypeCd": {
+                        "description": "Type of Address value will be HOME,Business etc",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  },
+                  "memberPhone": {
+                    "type": "object",
+                    "properties": {
+                      "telephoneNbr": {
+                        "description": "Telephone Number",
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "telephoneExtension": {
+                        "description": "Telephone Extension",
+                        "type": "string",
+                        "format": "string"
+                      },
+                      "sourceCode": {
+                        "description": "Source Code",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  },
+                  "memberEmail": {
+                    "description": "member email address",
+                    "type": "object",
+                    "properties": {
+                      "emailAddress": {
+                        "description": "email address",
+                        "type": "string",
+                        "format": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "relationshipCd": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Code",
+            "type": "string",
+            "format": "string"
+          },
+          "name": {
+            "type": "string",
+            "format": "string"
+          },
+          "description": {
+            "description": "description",
+            "type": "string",
+            "format": "string"
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Specification within Ignite Service Design Platform",
+      "url": "https://10.0.0.145:8443/ICS/serviceSpecification.jsp?id=5753304"
+    },
+    "x-ignite-status": {
+      "inventory": "API - Facade"
+    },
+    "x-ignite-discovery": {
+      "profile": "application api service",
+      "interfaceType": "REST"
+    }
+  }

@@ -25,10 +25,10 @@ export class NodeService {
 
   getFilesUsingObs(): Observable<any> {
     return this.http.get("assets/files-lazy.json");
-    // .subscribe(data =>{
-    //   console.log(data);
-    //   return data;
-    // })
+  }
+
+  getMicroSerJSONUsingObs(): Observable<any> {
+    return this.http.get("assets/micro.json");
   }
 
 }
