@@ -1,7 +1,11 @@
 <div class="p-grid p-fluid">
     <div class="p-col-12 p-md-4">
         <h4>Daas</h4>
-
+        <div style="margin-bottom: m">
+        <button pButton type="button" label="Expand All" (click)="expandAll()" style="margin-bottom: 5px;margin-right: .5rem"></button>
+        <button pButton type="button" label="Expand Responses" (click)="expandResponses()" style="margin-bottom: 5px;margin-right: .5rem"></button>
+        <button pButton type="button" label="Expand Arguments" (click)="expandArguments()" style="margin-bottom: 5px;margin-right: .5rem"></button>
+        </div>
         <p-tree [value]="daasTreeNode" [draggableNodes]="true" [droppableNodes]="false" droppableScope="c"
             selectionMode="checkbox" draggableScope="a"></p-tree>
     </div>
