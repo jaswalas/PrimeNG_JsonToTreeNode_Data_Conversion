@@ -17,6 +17,9 @@ export class HelperClass {
 
     constructor() { }
 
+    /*
+    Main method to create Tree Node object
+    */
     createParentNode(JSONData): Object {
         this.listOfTypesInSchema = JSONData.__schema.types;
         const parentNode = JSONData.__schema.queryType.name;
@@ -24,11 +27,18 @@ export class HelperClass {
         return mappedDataToTreeView;
     }
 
+    /*
+    Method to create objects representing API methods 
+    */
     mapJsonToTreeNode(parentNode, jsonData):Object {
         const apiMapperSchema = this.createSecondLevelObject(parentNode, jsonData);
         return createTreeNodeObject(parentNode, IsChildrenNodePresent.YES, apiMapperSchema);
     }
 
+    /*
+    Method to iterate over json data to create API object
+    The method would create node for Argument and Response part of the API method
+    */
     createSecondLevelObject(label, data): Array<Object> {
         const apiNamesList = this.listOfTypesInSchema.filter(x => x.name === label)[0];
         const childnestedChild = apiNamesList.fields;
@@ -51,12 +61,18 @@ export class HelperClass {
         return this.mainTreeArray;
     }
 
+    /*
+    Create Tree structure for a element 
+    */
     convertToTreeStructure(element, nodeHeader, mainTreeArray) {
         const _arr = this.mapHierarchyOfJsonData(element);
         const arrayStructure = createTreeNodeObject(nodeHeader, IsChildrenNodePresent.YES, _arr);
         return mainTreeArray.push(arrayStructure);
     }
 
+    /*
+    Map objects for different data types
+    */
     mapHierarchyOfJsonData(array): any[] {
         const tempArray = [];
         array.forEach(element => {
@@ -71,6 +87,10 @@ export class HelperClass {
         return tempArray;
     }
 
+    /*
+    Iterate for complex data type - for instance object properties
+    or Array list
+    */
     createObjectForNonPrimitive(element, tempArray) {
         let temp;
         if (element.type.kind === "OBJECT") {
@@ -85,11 +105,18 @@ export class HelperClass {
         return tempArray;
     }
 
+    /*
+    Method to create tree node for Responses for the api methods
+    */
     createResObjForTypeObject(obj, propName) {
         var children = this.transform(obj[0].fields);
         return createTreeNodeObject(propName, IsChildrenNodePresent.YES, children);
     }
 
+   /*
+   Method to iterate over field and based on data type, 
+   call respective tree node creation method
+   */
     transform(array) {
         var childrenArray = [];
         array.forEach(element => {
@@ -105,6 +132,9 @@ export class HelperClass {
         return childrenArray;
     }
 
+    /*
+    Method that create tree node object for string data type
+    */
     convertDataForSimpleType(element, parentArrayToAppendTo)   {
         const nodeName = concatNameAndType(element, "String");
         const obj = createTreeNodeObject(nodeName, IsChildrenNodePresent.NO);

@@ -21,6 +21,9 @@ export class microServiceDataHelper {
 
     constructor() { }
 
+    /*
+    Main method to create root level json data
+    */
     createParentNode(JSONData) {
 
         let title = JSONData.info.title;
@@ -44,6 +47,10 @@ export class microServiceDataHelper {
         return this.mainTreeArray;
     }
 
+    /*
+    Method to create  object for Args tree nodes and Response tree node
+    Each Api method will have separate Args and Response object structure as child
+    */
     createApiMethodObjects(element, JSONData) {
         let elementMappingArray = [];
 
@@ -59,6 +66,9 @@ export class microServiceDataHelper {
 
     }
 
+   /*
+   Create object that will represent Arguments for the API
+   */
     createArgumentsObject(element): Object {
         let argsNodeArray = [];
         for (let param = 0; param < element.parameters.length; param++) {
@@ -72,6 +82,9 @@ export class microServiceDataHelper {
         return createTreeNodeObject(METHOD_ARGS_NODE, IsChildrenNodePresent.YES, argsNodeArray);
     }
 
+    /*
+   Create object that will represent Response parameter for the API
+   */
     createResponseObject(element): Object {
         this.mapResponseObjectToData(element);
         let responseObject =
@@ -79,6 +92,9 @@ export class microServiceDataHelper {
         return responseObject;
     }
 
+    /*
+        Map 200( successful) response data to parent tree node
+    */
     mapResponseObjectToData(element) {
         const verb = element[0];
         const res = element[1].responses;
@@ -92,6 +108,10 @@ export class microServiceDataHelper {
         }
     }
 
+    /*
+    Method to populate object from Definition section in case the value for the key field
+    is a reference to the defintion section of Json
+    */
     searchFromDefinition(type) {
         let fields;
         let defintionNode = this.schemaData.definitions;
@@ -105,6 +125,9 @@ export class microServiceDataHelper {
 
     }
 
+    /*
+    Populate object ( tree object structure) based on data type  
+    */
     populateObjectBasedOnDataType(object, key) {
         let hasChildNode = true;
         let childrenNodeArray = [];
@@ -120,6 +143,9 @@ export class microServiceDataHelper {
 
     }
 
+    /*
+    For non-primitive type data 
+    */
     nonPrimitiveObject(object) {
         let prop;
         if (!object.type) {
@@ -134,6 +160,7 @@ export class microServiceDataHelper {
         return this.iterateOverObjectElements(prop);
     }
 
+    // Method to extract fields from Definition node of JSON data
     forReferenceDefintionType(object) {
         let refArray = [];
         let ref = object['$ref'];
@@ -147,6 +174,7 @@ export class microServiceDataHelper {
 
     }
 
+    //Method to iterate over non-primitive data type inner objects/fields
     iterateOverObjectElements(obj) {
         var arr = [];
         for (const item in obj) {
