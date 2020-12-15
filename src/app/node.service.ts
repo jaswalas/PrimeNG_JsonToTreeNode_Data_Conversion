@@ -24,11 +24,11 @@ export class NodeService {
   }
 
   getFilesUsingObs(): Observable<any> {
-    return this.http.get("assets/files-lazy.json");
+    return this.http.get("assets/ds.json");
   }
 
   getMicroSerJSONUsingObs(): Observable<any> {
-    return this.http.get("assets/micro.json");
+    return this.http.get("assets/ms.json");
   }
 
 }
