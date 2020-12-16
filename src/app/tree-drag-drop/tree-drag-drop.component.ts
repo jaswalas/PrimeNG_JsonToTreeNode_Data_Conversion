@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NodeService } from '../node.service';
 import { TreeNode } from 'primeng/api';
 import { TreeDragDropService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { HelperClass } from './dassDataConversionHelper';
 import { microServiceDataHelper } from './microServiceDataConversionHelper';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-tree-drag-drop',
@@ -23,9 +24,16 @@ export class TreeDragDropComponent implements OnInit {
   microServiceTreeNode: TreeNode[] = [];
   helper: HelperClass;
   microHelper: microServiceDataHelper;
-  clonedDaas : TreeNode[];
+  clonedDaas: TreeNode[];
+  static latestId: number;
+  listenFunc: Function;
+  @ViewChild("op") op: OverlayPanel;
+  draggedNode: any;
 
-  constructor(private nodeService: NodeService) {
+  mappedFieldsList = [];
+
+  constructor(private nodeService: NodeService, private renderer2: Renderer2,
+    private elementRef: ElementRef) {
     this.helper = new HelperClass();
     this.microHelper = new microServiceDataHelper();
   }
@@ -53,6 +61,16 @@ export class TreeDragDropComponent implements OnInit {
 
   }
 
+
+  /*
+****************
+Logic to expand arguments/responses/all section
+
+*****************
+
+*/
+
+/* #region  Expand section */
   expandAll() {
     this.daasTreeNode = [...this.clonedDaas];
     this.expandArgs("");
@@ -66,7 +84,7 @@ export class TreeDragDropComponent implements OnInit {
   expandArguments() {
     this.daasTreeNode = [...this.clonedDaas];
     this.expandArgs("Responses");
- }
+  }
 
   expandArgs(childToRemove) {
     const mainResponseArray = [];
@@ -103,6 +121,71 @@ export class TreeDragDropComponent implements OnInit {
         this.expandRecursive(childNode, isExpand);
       });
     }
+  }
+
+  /* //#endregion */
+
+
+
+/*
+****************
+Logic for drag and drop - and creation of element to display mapped field
+
+*****************
+
+*/
+
+
+  onDrop(event) {
+    console.log(event);
+    // if (false) {
+    //   event.accept();
+    // } else {
+      this.createMappingAfterDragEnd(event);
+   // }
+  }
+
+  createMappingAfterDragEnd(event) {
+    event.originalEvent.preventDefault();
+    event.originalEvent.stopPropagation();
+    const element = this.createMappingIcon(event);
+    this.populateMappedFieldList(event);
+    this.listenFunc = this.renderer2.listen(event.originalEvent.target, 'click', (e) => {
+      this.showMappingInformation(e, event);
+    });
+  }
+
+  static incrementId() {
+    if (!this.latestId) this.latestId = 1
+    else this.latestId++
+    return this.latestId
+  }
+
+  createMappingIcon(event) {
+    const element = this.renderer2.createElement('div');
+    const genratedId = TreeDragDropComponent.incrementId();
+    this.renderer2.setAttribute(element, 'id', JSON.stringify(genratedId));
+    this.renderer2.setAttribute(element, 'data-val', JSON.stringify(event.dragNode.label));
+    element.classList.add('mappedIcon');
+    this.renderer2.appendChild(event.originalEvent.target, element);
+    return element;
+  }
+
+  showMappingInformation(e, parentEvent) {
+    e.stopPropagation();
+    this.op.toggle(e);
+
+    const draggedLabel = parentEvent.dragNode.label.split(' ')[0];
+    this.draggedNode = draggedLabel;
+  }
+
+  populateMappedFieldList(event) {
+    const mappingFieldsObject = {
+      source: event.dragNode.label.split(' ')[0],
+      destination: event.dropNode.label.split(' ')[0]
+    }
+
+    this.mappedFieldsList.push(mappingFieldsObject);
   }
 
 

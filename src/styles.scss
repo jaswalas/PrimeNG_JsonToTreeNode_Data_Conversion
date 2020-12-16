@@ -3,7 +3,12 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI Emoji”, “Segoe UI Symbol”;
   }
 
-
-  /*p-treenode::before {
-    content: "\f07b"
-    }*/
+  .mappedIcon {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #000;
+    background: yellow;
+    transform: skew(-20deg);
+    -webkit-transform: skew(-20deg);
+    margin-left: 10px;
+}

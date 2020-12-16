@@ -14,6 +14,7 @@ import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import { NodeService } from './node.service';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { NodeService } from './node.service';
     ContextMenuModule,
     HttpClientModule,
     FormsModule,
+    OverlayPanelModule,
     RouterModule.forRoot([
       {path:'',component: AppComponent}
 

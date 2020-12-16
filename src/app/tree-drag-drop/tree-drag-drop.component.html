@@ -1,20 +1,49 @@
 <div class="p-grid p-fluid">
-    <div class="p-col-12 p-md-4">
+    <div class="p-col-4 p-md-4">
         <h4>Daas</h4>
-        <!-- <div style="margin-bottom: m">
-        <button pButton type="button" label="Expand All" (click)="expandAll()" style="margin-bottom: 5px;margin-right: .5rem"></button>
-        <button pButton type="button" label="Expand Responses" (click)="expandResponses()" style="margin-bottom: 5px;margin-right: .5rem"></button>
-        <button pButton type="button" label="Expand Arguments" (click)="expandArguments()" style="margin-bottom: 5px;margin-right: .5rem"></button>
-        </div> -->
+
+        <div style="margin-bottom: m">
+            <button pButton type="button" label="Expand All" (click)="expandAll()"
+                style="margin-bottom: 5px;margin-right: .5rem"></button>
+            <button pButton type="button" label="Expand Responses" (click)="expandResponses()"
+                style="margin-bottom: 5px;margin-right: .5rem"></button>
+            <button pButton type="button" label="Expand Arguments" (click)="expandArguments()"
+                style="margin-bottom: 5px;margin-right: .5rem"></button>
+        </div>
         <p-tree [value]="daasTreeNode" [draggableNodes]="true" [droppableNodes]="false" droppableScope="c"
-            selectionMode="checkbox" draggableScope="a"></p-tree>
+            selectionMode="checkbox" draggableScope="a">
+        </p-tree>
     </div>
 
-    <div class="p-col-12 p-md-4">
+    <div class="p-col-4 p-md-4">
         <h4>MicroService</h4>
 
         <p-tree [value]="microServiceTreeNode" [draggableNodes]="true" selectionMode="checkbox" [droppableNodes]="true"
-           draggableScope="b"></p-tree>
+            draggableScope="b" (onNodeDrop)="onDrop($event)" [validateDrop]="true">
+
+            <ng-template let-node pTemplate="default">
+                <span>{{node.label}}</span>
+            </ng-template>
+
+        </p-tree>
+
+
+    </div>
+
+    <div class="p-col-4 p-md-4">
+        <ng-container *ngIf="(mappedFieldsList && mappedFieldsList.length > 0)">
+            <ul *ngFor="let mapper of mappedFieldsList">
+                <li>{{mapper.source }} - {{mapper.destination}}</li>
+            </ul>
+        </ng-container>
     </div>
 
 </div>
+
+
+<p-overlayPanel #op [showCloseIcon]="true" [style]="{width: '300px'}">
+    <ng-template pTemplate>
+        <div style="font-size:smaller;">Mapped node from DAAS</div>
+        <span style="font-size:smaller;">{{draggedNode}}</span>
+    </ng-template>
+</p-overlayPanel>
